@@ -1,0 +1,54 @@
+# ─── Backend (Laravel) ───────────────────────────────────────────────
+/backend/vendor/
+/backend/node_modules/
+/backend/.env
+/backend/.env.backup
+/backend/.env.production
+/backend/storage/*.key
+/backend/storage/app/public/*
+!/backend/storage/app/public/.gitkeep
+/backend/storage/framework/cache/data/*
+!/backend/storage/framework/cache/data/.gitkeep
+/backend/storage/framework/sessions/*
+!/backend/storage/framework/sessions/.gitkeep
+/backend/storage/framework/views/*
+!/backend/storage/framework/views/.gitkeep
+/backend/storage/logs/*
+!/backend/storage/logs/.gitkeep
+/backend/bootstrap/cache/*
+!/backend/bootstrap/cache/.gitkeep
+/backend/public/storage
+/backend/public/hot
+/backend/.phpunit.result.cache
+/backend/.phpunit.cache
+
+# ─── Frontend (React / Vite) ─────────────────────────────────────────
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+/frontend/*.local
+/frontend/.env
+/frontend/.env.local
+
+# ─── Docker ──────────────────────────────────────────────────────────
+/docker/postgres/data/
+
+# ─── OS / Editor ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# ─── Secrets ─────────────────────────────────────────────────────────
+*.pem
+*.key
+!docker/nginx/ssl/.gitkeep
+auth.json
+
+# Claude local settings
+.claude/

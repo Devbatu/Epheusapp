@@ -1,0 +1,171 @@
+version: '3.9'
+
+services:
+  # ─── Web Server ───────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: ephesus_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      php:
+        condition: service_healthy
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+
+  # ─── PHP-FPM ──────────────────────────────────────────────────────────────
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: ephesus_php
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_HOST: postgres
+      DB_DATABASE: ephesus
+      DB_USERNAME: ephesus
+      DB_PASSWORD: secret
+      REDIS_HOST: redis
+      REDIS_PASSWORD: secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t 2>&1 | grep -q 'configuration file' && echo ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 120s
+
+  # ─── PostgreSQL ───────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: ephesus_postgres
+    environment:
+      POSTGRES_DB: ephesus
+      POSTGRES_USER: ephesus
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ephesus -d ephesus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ─── Redis ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ephesus_redis
+    command: redis-server --requirepass secret --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "secret", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ─── Horizon (Queue Worker) ───────────────────────────────────────────────
+  horizon:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: ephesus_horizon
+    command: sh -c "cd /var/www/html && php artisan horizon"
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      APP_ENV: local
+      DB_HOST: postgres
+      DB_DATABASE: ephesus
+      DB_USERNAME: ephesus
+      DB_PASSWORD: secret
+      REDIS_HOST: redis
+      REDIS_PASSWORD: secret
+    depends_on:
+      php:
+        condition: service_healthy
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+    profiles:
+      - full
+
+  # ─── Meilisearch ──────────────────────────────────────────────────────────
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: ephesus_meilisearch
+    environment:
+      MEILI_MASTER_KEY: masterkey
+      MEILI_ENV: development
+    volumes:
+      - meilisearch_data:/meili_data
+    ports:
+      - "7700:7700"
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+    profiles:
+      - full
+
+  # ─── Mailhog (Dev email catcher) ──────────────────────────────────────────
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ephesus_mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+
+  # ─── Frontend (React 19 + Vite dev server) ────────────────────────────────
+  frontend:
+    image: node:22-slim
+    container_name: ephesus_frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost/api/v1
+    networks:
+      - ephesus_net
+    restart: unless-stopped
+
+volumes:
+  frontend_node_modules:
+  postgres_data:
+  redis_data:
+  meilisearch_data:
+
+networks:
+  ephesus_net:
+    driver: bridge

@@ -1,0 +1,87 @@
+{
+    "name": "ephesus/mediterranean-delights",
+    "description": "Ephesus Mediterranean Delights — Enterprise ERP & E-Commerce Platform",
+    "keywords": ["laravel", "erp", "ecommerce", "b2b", "multi-branch"],
+    "license": "proprietary",
+    "require": {
+        "php": "^8.4",
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/horizon": "^5.29",
+        "laravel/scout": "^10.0",
+        "spatie/laravel-permission": "^6.10",
+        "spatie/laravel-activitylog": "^4.9",
+        "spatie/laravel-medialibrary": "^11.0",
+        "spatie/laravel-query-builder": "^6.2",
+        "spatie/laravel-backup": "^9.3",
+        "tymon/jwt-auth": "^2.1",
+        "meilisearch/meilisearch-php": "^1.8",
+        "predis/predis": "^2.3",
+        "aws/aws-sdk-php": "^3.319",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "intervention/image": "^3.8",
+        "barryvdh/laravel-snappy": "^1.0",
+        "maatwebsite/excel": "^3.1",
+        "laravel/vonage-notification-channel": "^3.0",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.18",
+        "laravel/sail": "^1.37",
+        "laravel/telescope": "^5.5",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.5",
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-laravel": "^3.1",
+        "phpstan/phpstan": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php artisan migrate --ansi",
+            "@php artisan db:seed --ansi"
+        ],
+        "pint": "vendor/bin/pint",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

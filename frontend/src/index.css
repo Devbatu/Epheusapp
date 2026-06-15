@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/* ─── Ephesus Luxury Brand Theme ──────────────────────────────────────────
+   Navy + Premium Gold palette. Exposed as Tailwind utilities:
+   bg-primary, text-gold, border-gold-dark, font-display, etc.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Brand colours */
+  --color-primary: #24364D;        /* Lacivert */
+  --color-primary-dark: #1A2535;   /* Koyu Lacivert */
+  --color-primary-light: #324a68;
+
+  --color-gold: #C9A45C;           /* Premium Altın */
+  --color-gold-dark: #A8843F;      /* Koyu Altın */
+  --color-gold-light: #ddc18e;
+
+  --color-charcoal: #2F2A28;       /* Kömür Siyahı */
+  --color-cream: #F8F5F0;          /* Kırık Beyaz */
+  --color-mist: #E7EAEE;           /* Açık Gri */
+  --color-surface: #FFFFFF;
+  --color-text-light: #6B7280;
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Cinzel", serif;            /* EPHESUS, başlıklar */
+  --font-script: "Allura", cursive;           /* Mediterranean Delights */
+  --font-serif: "Cormorant Garamond", serif;  /* Editöryel başlıklar */
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-cream);
+    color: #1E1E1E;
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--color-gold);
+    color: #fff;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: var(--color-gold-dark);
+    opacity: 0.6;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-gold); }
+}
+
+@layer components {
+  /* Logo wordmark */
+  .brand-ephesus {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+  .brand-tagline {
+    font-family: var(--font-script);
+    font-weight: 400;
+  }
+  .font-heading {
+    font-family: var(--font-serif);
+  }
+
+  /* Subtle gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #ddc18e 0%, #C9A45C 45%, #A8843F 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Thin gold divider */
+  .gold-rule {
+    height: 2px;
+    width: 64px;
+    background: linear-gradient(90deg, transparent, #C9A45C, transparent);
+  }
+}
+
+/* Fade/slide entrance used by hero & sections */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.7s ease both; }
