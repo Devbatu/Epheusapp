@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('email_verified')->default(false);
             $table->decimal('total_spent', 14, 2)->default(0);
             $table->integer('total_orders')->default(0);
-            $table->jsonb('preferences')->default('{}');
+            $table->json('preferences')->default('{}');
             $table->timestamp('last_order_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -72,7 +72,7 @@ return new class extends Migration
             $table->uuid('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->text('rejection_reason')->nullable();
-            $table->jsonb('custom_pricing')->default('{}'); // product_id => price overrides
+            $table->json('custom_pricing')->default('{}'); // product_id => price overrides
             $table->timestamps();
             $table->softDeletes();
 

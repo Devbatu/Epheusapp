@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('event', 50); // created, updated, deleted, approved, transferred
             $table->string('auditable_type');
             $table->uuid('auditable_id');
-            $table->jsonb('old_values')->nullable();
-            $table->jsonb('new_values')->nullable();
-            $table->jsonb('tags')->default('[]');
+            $table->json('old_values')->nullable();
+            $table->json('new_values')->nullable();
+            $table->json('tags')->default('[]');
             $table->string('ip_address', 45)->nullable();
             $table->string('user_agent')->nullable();
             $table->string('url')->nullable();
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('channel', 20)->default('in_app'); // in_app, email, sms, whatsapp
             $table->string('title');
             $table->text('body');
-            $table->jsonb('data')->default('{}');
+            $table->json('data')->default('{}');
             $table->string('action_url')->nullable();
             $table->boolean('is_read')->default(false);
             $table->timestamp('read_at')->nullable();

@@ -4,7 +4,7 @@
     "keywords": ["laravel", "erp", "ecommerce", "b2b", "multi-branch"],
     "license": "proprietary",
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/horizon": "^5.29",

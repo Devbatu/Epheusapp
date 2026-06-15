@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('manager_name')->nullable();
-            $table->jsonb('settings')->default('{}'); // Branch-specific config
-            $table->jsonb('working_hours')->default('{}');
+            $table->json('settings')->default('{}'); // Branch-specific config
+            $table->json('working_hours')->default('{}');
             $table->integer('sort_order')->default(0);
             $table->uuid('region_id')->nullable();
             $table->timestamps();

@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('shipping_method')->nullable();
             $table->string('shipping_carrier')->nullable();
             $table->string('tracking_number')->nullable();
-            $table->jsonb('shipping_address')->nullable();
+            $table->json('shipping_address')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('estimated_delivery')->nullable();

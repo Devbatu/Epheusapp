@@ -14,9 +14,10 @@ class ProductController extends Controller
         $query = Product::query()->with(['brand', 'category']);
 
         if ($search = $request->get('search')) {
+            $term = '%' . mb_strtolower($search) . '%';
             $query->where(fn ($q) => $q
-                ->where('name', 'ilike', "%{$search}%")
-                ->orWhere('sku', 'ilike', "%{$search}%"));
+                ->whereRaw('LOWER(name) LIKE ?', [$term])
+                ->orWhereRaw('LOWER(sku) LIKE ?', [$term]));
         }
 
         if ($status = $request->get('status')) {

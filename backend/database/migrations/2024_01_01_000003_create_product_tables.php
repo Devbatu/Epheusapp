@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -79,12 +80,12 @@ return new class extends Migration
             $table->decimal('b2b_price', 12, 2)->nullable();
             $table->string('unit', 20)->default('piece'); // piece, kg, liter, box
             $table->decimal('weight', 10, 3)->nullable();
-            $table->jsonb('dimensions')->nullable(); // {length, width, height}
+            $table->json('dimensions')->nullable(); // {length, width, height}
             $table->string('origin_country', 2)->nullable();
             $table->integer('min_order_qty')->default(1);
             $table->integer('min_stock_alert')->default(10);
             $table->decimal('tax_rate', 5, 2)->default(18.00);
-            $table->jsonb('meta')->nullable(); // SEO meta
+            $table->json('meta')->nullable(); // SEO meta
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
@@ -97,8 +98,13 @@ return new class extends Migration
             $table->index('barcode');
         });
 
-        // Full-text search index (created after the table exists)
-        DB::statement('CREATE INDEX products_name_fts ON products USING gin(to_tsvector(\'english\', name))');
+        // Full-text search index (driver-specific; created after the table exists)
+        $driver = Schema::getConnection()->getDriverName();
+        if ($driver === 'pgsql') {
+            DB::statement('CREATE INDEX products_name_fts ON products USING gin(to_tsvector(\'english\', name))');
+        } elseif ($driver === 'mysql') {
+            DB::statement('CREATE FULLTEXT INDEX products_name_fts ON products (name)');
+        }
 
         // Product Variants
         Schema::create('product_variants', function (Blueprint $table) {
@@ -110,7 +116,7 @@ return new class extends Migration
             $table->decimal('price', 12, 2)->nullable(); // overrides product base_price if set
             $table->decimal('cost_price', 12, 2)->nullable();
             $table->decimal('weight', 10, 3)->nullable();
-            $table->jsonb('attributes'); // {"size": "500g", "flavor": "original"}
+            $table->json('attributes'); // {"size": "500g", "flavor": "original"}
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->integer('sort_order')->default(0);
             $table->timestamps();

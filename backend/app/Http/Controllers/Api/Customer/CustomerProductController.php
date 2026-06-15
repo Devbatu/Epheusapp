@@ -16,9 +16,10 @@ class CustomerProductController extends Controller
             ->where('status', 'active');
 
         if ($search = $request->get('search')) {
+            $term = '%' . mb_strtolower($search) . '%';
             $query->where(fn ($q) => $q
-                ->where('name', 'ilike', "%{$search}%")
-                ->orWhere('short_description', 'ilike', "%{$search}%"));
+                ->whereRaw('LOWER(name) LIKE ?', [$term])
+                ->orWhereRaw('LOWER(short_description) LIKE ?', [$term]));
         }
 
         if ($category = $request->get('category')) {

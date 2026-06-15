@@ -14,7 +14,8 @@ class BranchController extends Controller
         $branches = Branch::query()
             ->withCount('warehouses')
             ->when($request->get('search'), fn ($q, $s) => $q
-                ->where('name', 'ilike', "%{$s}%")->orWhere('code', 'ilike', "%{$s}%"))
+                ->whereRaw('LOWER(name) LIKE ?', ['%' . mb_strtolower($s) . '%'])
+                ->orWhereRaw('LOWER(code) LIKE ?', ['%' . mb_strtolower($s) . '%']))
             ->when($request->get('status'), fn ($q, $s) => $q->where('status', $s))
             ->orderBy('code')
             ->paginate($request->get('per_page', 20));
