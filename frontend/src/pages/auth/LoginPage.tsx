@@ -12,8 +12,8 @@ import { Logo } from '@/components/shared/Logo'
 import { Seo } from '@/components/shared/Seo'
 
 const loginSchema = z.object({
-  email:    z.string().email('Geçerli bir e-posta girin.'),
-  password: z.string().min(1, 'Şifre gerekli.'),
+  email:    z.string().email('Please enter a valid email.'),
+  password: z.string().min(1, 'Password is required.'),
 })
 
 type LoginForm = z.infer<typeof loginSchema>
@@ -41,15 +41,15 @@ export default function LoginPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
-      if (data.requires_2fa) { toast.info('İki adımlı doğrulama gerekli.'); return }
+      if (data.requires_2fa) { toast.info('Two-factor authentication required.'); return }
       if (data.user && data.token) {
         login(data.user, data.token)
         const roleNames = data.user.roles.map((r) => r.name)
         navigate(from ?? getRedirectPath(roleNames), { replace: true })
-        toast.success(`Hoş geldiniz, ${data.user.name}!`)
+        toast.success(`Welcome, ${data.user.name}!`)
       }
     },
-    onError: () => toast.error('E-posta veya şifre hatalı.'),
+    onError: () => toast.error('Invalid email or password.'),
   })
 
   const fillDemo = () => {
@@ -59,7 +59,7 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <Seo title="Giriş" description="Ephesus hesabınıza giriş yapın." />
+      <Seo title="Sign In" description="Sign in to your Ephesus account." />
 
       {/* Left — brand panel */}
       <div className="relative hidden overflow-hidden lg:block">
@@ -69,9 +69,9 @@ export default function LoginPage() {
           <Logo variant="light" size="lg" />
           <div className="mt-8 gold-rule" />
           <p className="mt-8 max-w-md font-heading text-2xl leading-relaxed text-cream/90">
-            “Ege’nin bereketli topraklarından soframıza taşınan eşsiz lezzetler.”
+            “Authentic flavors from Anatolia, delivered to your table.”
           </p>
-          <p className="mt-4 text-sm uppercase tracking-[0.3em] text-gold">1995’ten Beri</p>
+          <p className="mt-4 text-sm uppercase tracking-[0.3em] text-gold">Since 1995</p>
         </div>
       </div>
 
@@ -79,17 +79,17 @@ export default function LoginPage() {
       <div className="flex flex-col justify-center bg-cream px-6 py-12 sm:px-12">
         <div className="mx-auto w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-2 text-sm text-text-light hover:text-gold-dark">
-            <ArrowLeft className="h-4 w-4" /> Mağazaya dön
+            <ArrowLeft className="h-4 w-4" /> Back to store
           </Link>
 
           <div className="lg:hidden"><Logo variant="dark" size="md" /></div>
 
-          <h1 className="mt-6 font-heading text-3xl font-bold text-primary">Tekrar Hoş Geldiniz</h1>
-          <p className="mt-2 text-sm text-text-light">Hesabınıza giriş yapın.</p>
+          <h1 className="mt-6 font-heading text-3xl font-bold text-primary">Welcome Back</h1>
+          <p className="mt-2 text-sm text-text-light">Sign in to your account.</p>
 
           <form onSubmit={handleSubmit((d) => mutate(d))} className="mt-8 space-y-5">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-primary">E-posta</label>
+              <label className="mb-1.5 block text-sm font-medium text-primary">Email</label>
               <input
                 {...register('email')}
                 type="email"
@@ -101,7 +101,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-primary">Şifre</label>
+              <label className="mb-1.5 block text-sm font-medium text-primary">Password</label>
               <div className="relative">
                 <input
                   {...register('password')}
@@ -123,7 +123,7 @@ export default function LoginPage() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold uppercase tracking-wide text-cream shadow-sm transition-colors hover:bg-primary-dark disabled:opacity-60"
             >
               {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-              Giriş Yap
+              Sign In
             </button>
           </form>
 
@@ -132,8 +132,8 @@ export default function LoginPage() {
             onClick={fillDemo}
             className="mt-4 w-full rounded-lg border border-dashed border-gold/50 bg-gold/5 px-4 py-3 text-left text-xs text-gold-dark transition-colors hover:bg-gold/10"
           >
-            <span className="font-semibold">Demo girişi:</span> admin@ephesus.com / Admin@1234!
-            <span className="ml-1 underline">(otomatik doldur)</span>
+            <span className="font-semibold">Demo login:</span> admin@ephesus.com / Admin@1234!
+            <span className="ml-1 underline">(autofill)</span>
           </button>
 
           <p className="mt-8 text-center text-xs text-text-light">

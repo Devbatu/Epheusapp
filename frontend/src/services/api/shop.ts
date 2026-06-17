@@ -21,6 +21,7 @@ export interface ShopProductDetail extends ShopProduct {
   unit?: string
   origin?: string
   tax_rate?: number
+  images?: string[]
   related: ShopProduct[]
 }
 

@@ -34,18 +34,18 @@ export default function ShopPage() {
   return (
     <div>
       <Seo
-        title={activeCat ? activeCat.name : 'Mağaza'}
-        description="Premium Akdeniz ürünleri: zeytinyağı, zeytin, peynir, baklava, kuruyemiş ve daha fazlası. Filtreleyin, keşfedin, sipariş verin."
+        title={activeCat ? activeCat.name : 'Shop'}
+        description="Premium Turkish delights, baklava, Turkish coffee and luxury gift boxes. Browse, discover and order online."
       />
 
       {/* Page banner */}
       <div className="bg-primary">
         <div className="mx-auto max-w-7xl px-6 py-12 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Koleksiyon</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Collection</p>
           <h1 className="mt-2 font-heading text-4xl font-bold text-white">
-            {activeCat ? activeCat.name : 'Tüm Ürünler'}
+            {activeCat ? activeCat.name : 'All Products'}
           </h1>
-          <p className="mt-2 text-sm text-cream/70">{data?.meta?.total ?? 0} ürün bulundu</p>
+          <p className="mt-2 text-sm text-cream/70">{data?.meta?.total ?? 0} products found</p>
         </div>
       </div>
 
@@ -58,19 +58,19 @@ export default function ShopPage() {
               <input
                 defaultValue={search}
                 onChange={(e) => setParam('search', e.target.value)}
-                placeholder="Ürün ara…"
+                placeholder="Search products…"
                 className="w-full rounded-full border border-mist bg-surface py-2.5 pl-10 pr-4 text-sm focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
               />
             </div>
 
             <div className="rounded-2xl border border-mist bg-surface p-5">
               <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary">
-                <SlidersHorizontal className="h-4 w-4 text-gold-dark" /> Kategoriler
+                <SlidersHorizontal className="h-4 w-4 text-gold-dark" /> Categories
               </h3>
               <div className="space-y-1">
                 <button onClick={() => setParam('category', '')}
                   className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${!category ? 'bg-primary font-medium text-cream' : 'text-text-light hover:bg-cream'}`}>
-                  Tümü
+                  All
                 </button>
                 {(categories ?? []).map((c) => (
                   <button key={c.id} onClick={() => setParam('category', c.slug)}
@@ -83,13 +83,13 @@ export default function ShopPage() {
             </div>
 
             <div className="rounded-2xl border border-mist bg-surface p-5">
-              <h3 className="mb-3 text-sm font-semibold text-primary">Sıralama</h3>
+              <h3 className="mb-3 text-sm font-semibold text-primary">Sort by</h3>
               <select value={sort} onChange={(e) => setParam('sort', e.target.value)}
                 className="w-full rounded-lg border border-mist bg-cream px-3 py-2 text-sm focus:border-gold focus:outline-none">
-                <option value="">Öne çıkanlar</option>
-                <option value="price_asc">Fiyat: Artan</option>
-                <option value="price_desc">Fiyat: Azalan</option>
-                <option value="name">İsim (A-Z)</option>
+                <option value="">Featured</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="name">Name (A-Z)</option>
               </select>
             </div>
           </aside>
@@ -105,7 +105,7 @@ export default function ShopPage() {
             ) : products.length === 0 ? (
               <div className="flex h-72 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-mist text-text-light">
                 <Package className="mb-2 h-8 w-8" />
-                <p className="text-sm">Bu kritere uygun ürün bulunamadı.</p>
+                <p className="text-sm">No products match your criteria.</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">

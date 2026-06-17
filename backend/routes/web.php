@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SpaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,24 +11,10 @@ use Illuminate\Support\Facades\Route;
 | Static assets (js/css/images) are served directly by the web server.
 | Every non-API, non-file route falls back to the SPA entry point so
 | client-side routing works on refresh / deep links.
+|
+| Invokable controller (not closures) so `route:cache` works in production.
 */
 
-Route::get('/', fn () => spa_response());
+Route::get('/', SpaController::class);
 
-Route::fallback(fn () => spa_response());
-
-if (! function_exists('spa_response')) {
-    function spa_response()
-    {
-        $entry = public_path('app.html');
-
-        if (! file_exists($entry)) {
-            return response(
-                '<h1>Ephesus API</h1><p>Frontend build not deployed yet. API is available under <code>/api/v1</code>.</p>',
-                200,
-            )->header('Content-Type', 'text/html');
-        }
-
-        return response()->file($entry);
-    }
-}
+Route::fallback(SpaController::class);

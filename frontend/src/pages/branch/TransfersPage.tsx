@@ -44,12 +44,12 @@ export default function TransfersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Transfers</h2>
-          <p className="text-sm text-gray-500">Manage inter-branch stock transfers</p>
+          <h2 className="text-2xl font-bold text-primary ">Transfers</h2>
+          <p className="text-sm text-text-light">Manage inter-branch stock transfers</p>
         </div>
         <Link
           to="/branch/transfers/create"
-          className="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-cream hover:bg-primary-dark"
         >
           <Plus className="h-4 w-4" />
           New Transfer
@@ -64,8 +64,8 @@ export default function TransfersPage() {
             onClick={() => setStatusFilter(f.value)}
             className={`rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
               statusFilter === f.value
-                ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400'
-                : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                ? 'bg-gold/15 text-gold-dark'
+                : 'text-text-light hover:bg-cream '
             }`}
           >
             {f.label}
@@ -74,62 +74,62 @@ export default function TransfersPage() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+      <div className="overflow-hidden rounded-xl border border-mist bg-surface  ">
+        <table className="min-w-full divide-y divide-mist ">
+          <thead className="bg-cream ">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">#</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">From</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">To</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Items</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Date</th>
-              <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">#</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">From</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">To</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">Items</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-light">Date</th>
+              <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-text-light">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody className="divide-y divide-mist ">
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <tr key={i}>
                   {Array.from({ length: 7 }).map((_, j) => (
                     <td key={j} className="px-6 py-4">
-                      <div className="h-4 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+                      <div className="h-4 animate-pulse rounded bg-mist " />
                     </td>
                   ))}
                 </tr>
               ))
             ) : transfers.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-sm text-gray-500">
+                <td colSpan={7} className="py-12 text-center text-sm text-text-light">
                   No transfers found.
                 </td>
               </tr>
             ) : (
               transfers.map((transfer: Transfer) => (
-                <tr key={transfer.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                <tr key={transfer.id} className="hover:bg-cream ">
+                  <td className="px-6 py-4 text-sm font-medium text-primary ">
                     {transfer.transfer_number}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
+                  <td className="px-6 py-4 text-sm text-text-light">
                     {transfer.from_branch?.name ?? transfer.from_branch_id}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
+                  <td className="px-6 py-4 text-sm text-text-light">
                     {transfer.to_branch?.name ?? transfer.to_branch_id}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
+                  <td className="px-6 py-4 text-sm text-text-light">
                     {transfer.items?.length ?? 0} items
                   </td>
                   <td className="px-6 py-4">
                     <TransferStatusBadge status={transfer.status} />
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
+                  <td className="px-6 py-4 text-sm text-text-light">
                     {formatDate(transfer.created_at)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link
                         to={`/branch/transfers/${transfer.id}`}
-                        className="rounded p-1 text-gray-400 hover:text-amber-600"
+                        className="rounded p-1 text-text-light hover:text-gold-dark"
                         title="View"
                       >
                         <Eye className="h-4 w-4" />
@@ -137,7 +137,7 @@ export default function TransfersPage() {
                       {transfer.status === 'pending' && (
                         <button
                           onClick={() => approveMutation.mutate(transfer.id)}
-                          className="rounded p-1 text-gray-400 hover:text-green-600"
+                          className="rounded p-1 text-text-light hover:text-green-600"
                           title="Approve"
                         >
                           <CheckCircle className="h-4 w-4" />

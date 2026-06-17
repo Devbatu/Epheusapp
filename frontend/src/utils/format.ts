@@ -1,7 +1,7 @@
 import { format, parseISO } from 'date-fns'
 
-export function formatCurrency(amount: number, currency = 'TRY'): string {
-  return new Intl.NumberFormat('tr-TR', {
+export function formatCurrency(amount: number, currency = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
     style:    'currency',
     currency,
     maximumFractionDigits: 2,

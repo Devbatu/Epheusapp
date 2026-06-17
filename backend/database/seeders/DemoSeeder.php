@@ -13,7 +13,6 @@ use App\Domain\Product\Models\Brand;
 use App\Domain\Product\Models\ProductCategory;
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Dealer\Models\Dealer;
-use App\Domain\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
 
 class DemoSeeder extends Seeder
@@ -24,55 +23,72 @@ class DemoSeeder extends Seeder
         $branches = Branch::all();
         $warehouses = Warehouse::all()->keyBy('branch_id');
 
+        $u = fn (string $id) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&w=800&q=80";
+
         // ─── Brands ─────────────────────────────────────────────────────────
         $brands = collect([
-            ['name' => 'Ephesus Gold',    'slug' => 'ephesus-gold'],
-            ['name' => 'Anatolia',        'slug' => 'anatolia'],
-            ['name' => 'Aegean Harvest',  'slug' => 'aegean-harvest'],
-            ['name' => 'Mediterra',       'slug' => 'mediterra'],
+            ['name' => 'Ephesus Gold',  'slug' => 'ephesus-gold'],
+            ['name' => 'Anatolia',      'slug' => 'anatolia'],
+            ['name' => 'Bosphorus',     'slug' => 'bosphorus'],
+            ['name' => "Sultan's",      'slug' => 'sultans'],
         ])->map(fn ($b) => Brand::create([
             'name' => $b['name'], 'slug' => $b['slug'], 'is_active' => true,
         ]));
 
-        // ─── Categories ─────────────────────────────────────────────────────
+        // ─── Categories (match reference nav) ───────────────────────────────
         $catData = [
-            'Olive Oil & Vinegar' => 'olive-oil-vinegar',
-            'Olives & Pickles'    => 'olives-pickles',
-            'Cheese & Dairy'      => 'cheese-dairy',
-            'Nuts & Dried Fruit'  => 'nuts-dried-fruit',
-            'Sweets & Baklava'    => 'sweets-baklava',
-            'Spreads & Sauces'    => 'spreads-sauces',
+            'Baklava'           => 'baklava',
+            'Turkish Delight'   => 'turkish-delight',
+            'Turkish Coffee'    => 'turkish-coffee',
+            'Gift Boxes'        => 'gift-boxes',
+            'Chocolate & Nuts'  => 'chocolate-nuts',
+            'Honey & Preserves' => 'honey-preserves',
         ];
         $categories = collect($catData)->map(fn ($slug, $name) => ProductCategory::create([
             'name' => $name, 'slug' => $slug, 'is_active' => true, 'depth' => 0,
         ]));
 
-        // ─── Products (Mediterranean catalogue with demo images) ────────────
+        // ─── Product catalogue (English · USD · Turkish delights) ───────────
+        // [name, category, price, cost, sku, image-id, featured]
         $products = [
-            ['Extra Virgin Olive Oil 1L', 'olive-oil-vinegar', 189.90, 110.00, 'EVOO-1L'],
-            ['Cold Pressed Olive Oil 500ml', 'olive-oil-vinegar', 119.90, 70.00, 'CPOO-500'],
-            ['Pomegranate Vinegar 500ml', 'olive-oil-vinegar', 84.50, 40.00, 'POMV-500'],
-            ['Green Olives Stuffed 700g', 'olives-pickles', 99.90, 55.00, 'GROL-700'],
-            ['Black Olives Gemlik 1kg', 'olives-pickles', 134.90, 80.00, 'BLOL-1K'],
-            ['Mixed Pickles Jar 1kg', 'olives-pickles', 74.90, 38.00, 'MXPK-1K'],
-            ['Aged White Cheese 600g', 'cheese-dairy', 159.90, 95.00, 'WCHS-600'],
-            ['Kashar Cheese 500g', 'cheese-dairy', 144.90, 88.00, 'KASH-500'],
-            ['Strained Yogurt 900g', 'cheese-dairy', 64.90, 32.00, 'STYG-900'],
-            ['Premium Medjool Dates 500g', 'nuts-dried-fruit', 174.90, 100.00, 'MEDJ-500'],
-            ['Roasted Pistachios 400g', 'nuts-dried-fruit', 224.90, 140.00, 'PIST-400'],
-            ['Dried Figs String 500g', 'nuts-dried-fruit', 109.90, 60.00, 'DFIG-500'],
-            ['Pistachio Baklava 1kg', 'sweets-baklava', 449.90, 260.00, 'BAKL-1K'],
-            ['Turkish Delight Assorted 800g', 'sweets-baklava', 139.90, 75.00, 'TDEL-800'],
-            ['Walnut Baklava 500g', 'sweets-baklava', 239.90, 140.00, 'WBAK-500'],
-            ['Hummus Classic 500g', 'spreads-sauces', 59.90, 28.00, 'HUMM-500'],
-            ['Tahini Pure Sesame 600g', 'spreads-sauces', 94.90, 52.00, 'TAHN-600'],
-            ['Pomegranate Molasses 700g', 'spreads-sauces', 69.90, 34.00, 'POMM-700'],
+            ['Pistachio Baklava',          'baklava', 54.99, 28.00, 'BKL-PST', '1519676867240-f03562e64548', true],
+            ['Mixed Baklava Box',          'baklava', 64.99, 33.00, 'BKL-MIX', '1571877227200-a0d98ea607e9', true],
+            ['Walnut Baklava',             'baklava', 44.99, 22.00, 'BKL-WAL', '1519676867240-f03562e64548', false],
+            ['Chocolate Baklava',          'baklava', 49.99, 25.00, 'BKL-CHO', '1571877227200-a0d98ea607e9', false],
+            ['Assorted Turkish Delight',   'turkish-delight', 29.99, 14.00, 'TD-AST', '1606471191009-63994c53433b', true],
+            ['Pomegranate Turkish Delight','turkish-delight', 32.99, 16.00, 'TD-POM', '1606471191009-63994c53433b', false],
+            ['Rose & Pistachio Lokum',     'turkish-delight', 34.99, 17.00, 'TD-ROS', '1578985545062-69928b1d9587', false],
+            ['Double Roasted Pistachio Lokum','turkish-delight', 39.99, 20.00, 'TD-DBL', '1578985545062-69928b1d9587', false],
+            ['Turkish Coffee Set',         'turkish-coffee', 89.99, 48.00, 'TC-SET', '1495474472287-4d71bcdd2085', true],
+            ['Traditional Ground Coffee',  'turkish-coffee', 19.99, 9.00, 'TC-GRD', '1481391319762-47dff72954d9', false],
+            ['Copper Cezve & Cups',        'turkish-coffee', 74.99, 40.00, 'TC-CZV', '1495474472287-4d71bcdd2085', false],
+            ['Luxury Gift Box — Grand',    'gift-boxes', 129.99, 70.00, 'GB-GRD', '1565958011703-44f9829ba187', true],
+            ['Signature Wooden Gift Box',  'gift-boxes', 99.99, 55.00, 'GB-WDN', '1517433367423-c7e5b0f35086', false],
+            ['Celebration Gift Box',       'gift-boxes', 79.99, 42.00, 'GB-CEL', '1549007994-cb92caebd54b', false],
+            ['Roasted Pistachios 400g',    'chocolate-nuts', 24.99, 12.00, 'CN-PST', '1599599810769-bcde5a160d32', false],
+            ['Chocolate Coated Dates',     'chocolate-nuts', 27.99, 13.00, 'CN-DAT', '1565958011703-44f9829ba187', true],
+            ['Anatolian Blossom Honey 850g','honey-preserves', 22.99, 10.00, 'HP-HNY', '1601493700631-2b16ec4b4716', false],
+            ['Rose Petal Jam 380g',        'honey-preserves', 14.99, 6.00, 'HP-ROS', '1601493700631-2b16ec4b4716', false],
+        ];
+
+        // Shared imagery pool for building per-product galleries
+        $pool = [
+            '1519676867240-f03562e64548', '1571877227200-a0d98ea607e9', '1606471191009-63994c53433b',
+            '1565958011703-44f9829ba187', '1495474472287-4d71bcdd2085', '1599599810769-bcde5a160d32',
+            '1601493700631-2b16ec4b4716', '1505253716362-afaea1d3d1af',
         ];
 
         $createdProducts = collect();
         $i = 0;
-        foreach ($products as [$name, $catSlug, $price, $cost, $sku]) {
+        foreach ($products as [$name, $catSlug, $price, $cost, $sku, $imgId, $featured]) {
             $i++;
+            // Build a 4-image gallery: primary + 3 distinct from the pool
+            $gallery = [$imgId];
+            foreach ([$i, $i + 2, $i + 4] as $off) {
+                $cand = $pool[$off % count($pool)];
+                if (! in_array($cand, $gallery)) $gallery[] = $cand;
+            }
+            $images = array_map(fn ($id) => $u($id), $gallery);
             $product = Product::create([
                 'brand_id'        => $brands->random()->id,
                 'category_id'     => $categories->firstWhere('slug', $catSlug)->id,
@@ -80,34 +96,33 @@ class DemoSeeder extends Seeder
                 'slug'            => Str::slug($name),
                 'sku'             => $sku,
                 'barcode'         => '869' . str_pad((string) $i, 10, '0', STR_PAD_LEFT),
-                'short_description' => 'Authentic Mediterranean ' . strtolower($name) . ' — sourced from the Aegean region.',
-                'description'     => 'Premium quality ' . $name . '. Hand-selected, naturally produced and packed fresh at Ephesus Mediterranean Delights.',
+                'short_description' => 'Handcrafted in tradition, delivered fresh — authentic ' . strtolower($name) . '.',
+                'description'     => 'Our ' . $name . ' is prepared by skilled artisans following centuries-old recipes, '
+                    . 'using only the finest nuts, honey and natural ingredients. Beautifully packaged and shipped fresh from Anatolia.',
                 'type'            => 'simple',
                 'status'          => 'active',
-                'is_featured'     => $i % 4 === 0,
+                'is_featured'     => $featured,
                 'has_expiration'  => true,
                 'base_price'      => $price,
                 'cost_price'      => $cost,
                 'b2b_price'       => round($price * 0.82, 2),
-                'unit'            => 'piece',
-                'tax_rate'        => 10.00,
+                'unit'            => 'box',
+                'tax_rate'        => 8.00,
                 'min_stock_alert' => 15,
                 'min_order_qty'   => 1,
                 'origin_country'  => 'TR',
-                'meta'            => ['image' => "https://picsum.photos/seed/{$sku}/500/500"],
+                'meta'            => ['image' => $u($imgId), 'images' => $images],
             ]);
             $createdProducts->push($product);
 
-            // Stock across all branches
             foreach ($branches as $branch) {
                 $wh = $warehouses[$branch->id] ?? null;
                 if (! $wh) continue;
-                $qty = rand(0, 120); // some will be low/zero for the low-stock widget
                 Stock::create([
                     'branch_id'    => $branch->id,
                     'warehouse_id' => $wh->id,
                     'product_id'   => $product->id,
-                    'quantity'     => $qty,
+                    'quantity'     => rand(0, 140),
                     'average_cost' => $cost,
                 ]);
             }
@@ -115,10 +130,10 @@ class DemoSeeder extends Seeder
 
         // ─── Suppliers ──────────────────────────────────────────────────────
         $suppliers = [
-            ['Aegean Olive Co.', 'aegean-olive'],
-            ['Anatolian Dairy Farms', 'anatolian-dairy'],
-            ['Gaziantep Nuts & Sweets', 'gaziantep-nuts'],
-            ['Marmara Pickles Ltd.', 'marmara-pickles'],
+            ['Gaziantep Baklava Co.', 'gaziantep-baklava'],
+            ['Anatolian Honey Farms', 'anatolian-honey'],
+            ['Istanbul Confectionery', 'istanbul-confectionery'],
+            ['Aegean Nuts Ltd.', 'aegean-nuts'],
         ];
         foreach ($suppliers as $idx => [$name, $slug]) {
             DB::table('suppliers')->insert([
@@ -127,9 +142,9 @@ class DemoSeeder extends Seeder
                 'code' => 'SUP-' . str_pad((string) ($idx + 1), 3, '0', STR_PAD_LEFT),
                 'contact_name' => 'Procurement Office',
                 'email' => $slug . '@suppliers.example',
-                'phone' => '+90 212 555 0' . rand(100, 999),
-                'country' => 'TR', 'city' => 'Izmir',
-                'payment_terms_days' => 30, 'currency' => 'TRY',
+                'phone' => '+90 342 555 0' . rand(100, 999),
+                'country' => 'TR', 'city' => 'Gaziantep',
+                'payment_terms_days' => 30, 'currency' => 'USD',
                 'is_active' => true,
                 'total_purchased' => rand(50000, 500000),
                 'outstanding_balance' => rand(0, 40000),
@@ -138,13 +153,13 @@ class DemoSeeder extends Seeder
         }
 
         // ─── Customers ──────────────────────────────────────────────────────
-        $firstNames = ['Ahmet','Ayşe','Mehmet','Fatma','Mustafa','Zeynep','Ali','Elif','Can','Deniz','Burak','Selin'];
-        $lastNames  = ['Yılmaz','Kaya','Demir','Şahin','Çelik','Yıldız','Arslan','Doğan','Kılıç','Aydın'];
+        $firstNames = ['James','Emily','Michael','Sophia','David','Olivia','Daniel','Emma','William','Ava','John','Mia'];
+        $lastNames  = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Wilson','Taylor'];
         $customers = collect();
         for ($c = 0; $c < 14; $c++) {
             $fn = $firstNames[$c % count($firstNames)];
             $ln = $lastNames[$c % count($lastNames)];
-            $email = strtolower(Str::ascii($fn) . '.' . Str::ascii($ln) . $c . '@customer.example');
+            $email = strtolower($fn . '.' . $ln . $c . '@customer.example');
 
             $user = User::create([
                 'name' => "$fn $ln", 'email' => $email,
@@ -152,11 +167,11 @@ class DemoSeeder extends Seeder
             ]);
             $user->assignRole('customer');
 
-            $cust = DB::table('customers')->insertGetId([
+            DB::table('customers')->insert([
                 'id' => $cid = (string) Str::uuid(),
                 'user_id' => $user->id,
                 'first_name' => $fn, 'last_name' => $ln,
-                'email' => $email, 'phone' => '+90 5' . rand(30, 59) . rand(1000000, 9999999),
+                'email' => $email, 'phone' => '+1 555 ' . rand(1000000, 9999999),
                 'is_active' => true, 'email_verified' => true,
                 'total_spent' => 0, 'total_orders' => 0,
                 'created_at' => now()->subDays(rand(1, 120)), 'updated_at' => now(),
@@ -166,11 +181,11 @@ class DemoSeeder extends Seeder
 
         // ─── Dealers ────────────────────────────────────────────────────────
         $companies = [
-            ['Marmara Gıda A.Ş.', 'approved'],
-            ['Ege Toptan Market', 'approved'],
-            ['Akdeniz Distribütör', 'approved'],
-            ['Başkent Şarküteri', 'pending'],
-            ['Karadeniz Ticaret', 'pending'],
+            ['Mediterranean Imports LLC', 'approved'],
+            ['Gourmet Distributors Inc.', 'approved'],
+            ['Levant Foods Trading', 'approved'],
+            ['Bazaar Wholesale Co.', 'pending'],
+            ['Silk Road Provisions', 'pending'],
         ];
         $dealers = collect();
         foreach ($companies as $idx => [$company, $status]) {
@@ -186,10 +201,10 @@ class DemoSeeder extends Seeder
                 'company_name' => $company,
                 'company_slug' => Str::slug($company) . '-' . $idx,
                 'tax_number' => (string) rand(1000000000, 9999999999),
-                'contact_name' => 'Satın Alma Müdürü',
-                'email' => $email, 'phone' => '+90 216 555 0' . rand(100, 999),
-                'address' => 'Organize Sanayi Bölgesi No:' . rand(1, 99),
-                'country' => 'TR', 'city' => 'Istanbul',
+                'contact_name' => 'Purchasing Manager',
+                'email' => $email, 'phone' => '+1 212 555 0' . rand(100, 999),
+                'address' => 'Suite ' . rand(100, 999) . ', Trade Center',
+                'country' => 'US', 'city' => 'New York',
                 'status' => $status,
                 'credit_limit' => $status === 'approved' ? rand(50000, 200000) : 0,
                 'current_balance' => $status === 'approved' ? rand(0, 40000) : 0,
@@ -201,7 +216,7 @@ class DemoSeeder extends Seeder
             if ($status === 'approved') $dealers->push($dealer);
         }
 
-        // ─── Orders (customer + dealer, varied statuses, last 60 days) ──────
+        // ─── Orders ─────────────────────────────────────────────────────────
         $statuses = ['delivered','delivered','delivered','shipped','processing','confirmed','pending','cancelled'];
         $orderNo = 1;
         for ($o = 0; $o < 60; $o++) {
@@ -214,12 +229,10 @@ class DemoSeeder extends Seeder
             $status = $statuses[array_rand($statuses)];
             $createdAt = now()->subDays(rand(0, 60))->subHours(rand(0, 23));
 
-            $lineCount = rand(1, 5);
-            $items = $createdProducts->random($lineCount);
-            $subtotal = 0; $taxTotal = 0;
-            $orderItems = [];
+            $items = $createdProducts->random(rand(1, 5));
+            $subtotal = 0; $taxTotal = 0; $orderItems = [];
             foreach ($items as $p) {
-                $qty = rand(1, 8);
+                $qty = rand(1, 6);
                 $unit = $isDealer ? (float) $p->b2b_price : (float) $p->base_price;
                 $lineSub = $unit * $qty;
                 $tax = $lineSub * ($p->tax_rate / 100);
@@ -234,7 +247,6 @@ class DemoSeeder extends Seeder
                 ];
             }
             $total = $subtotal + $taxTotal;
-
             $orderId = (string) Str::uuid();
             DB::table('orders')->insert([
                 'id' => $orderId,
@@ -247,19 +259,18 @@ class DemoSeeder extends Seeder
                 'status' => $status,
                 'subtotal' => round($subtotal, 2), 'discount_amount' => 0, 'discount_rate' => 0,
                 'tax_amount' => round($taxTotal, 2), 'shipping_amount' => 0,
-                'total' => round($total, 2), 'currency' => 'TRY',
+                'total' => round($total, 2), 'currency' => 'USD',
                 'payment_method' => $isDealer ? 'credit' : 'card',
                 'payment_status' => in_array($status, ['delivered','shipped']) ? 'paid' : 'pending',
                 'created_at' => $createdAt, 'updated_at' => $createdAt,
             ]);
             DB::table('order_items')->insert(array_map(fn ($it) => $it + ['order_id' => $orderId], $orderItems));
 
-            // Finance income for paid orders
             if (in_array($status, ['delivered','shipped'])) {
                 DB::table('finance_transactions')->insert([
                     'id' => (string) Str::uuid(),
                     'branch_id' => $branch->id, 'type' => 'income', 'category' => 'sales',
-                    'amount' => round($total, 2), 'currency' => 'TRY',
+                    'amount' => round($total, 2), 'currency' => 'USD',
                     'description' => 'Sale income', 'created_by' => $admin->id,
                     'transaction_date' => $createdAt->toDateString(),
                     'created_at' => $createdAt, 'updated_at' => $createdAt,
@@ -267,13 +278,13 @@ class DemoSeeder extends Seeder
             }
         }
 
-        // ─── Some expenses ──────────────────────────────────────────────────
+        // ─── Expenses ───────────────────────────────────────────────────────
         foreach ($branches as $branch) {
-            foreach (['rent' => 25000, 'salary' => 60000, 'utilities' => 8000] as $cat => $amt) {
+            foreach (['rent' => 6000, 'salary' => 18000, 'utilities' => 2200] as $cat => $amt) {
                 DB::table('finance_transactions')->insert([
                     'id' => (string) Str::uuid(),
                     'branch_id' => $branch->id, 'type' => 'expense', 'category' => $cat,
-                    'amount' => $amt + rand(-2000, 2000), 'currency' => 'TRY',
+                    'amount' => $amt + rand(-500, 500), 'currency' => 'USD',
                     'description' => ucfirst($cat) . ' expense', 'created_by' => $admin->id,
                     'transaction_date' => now()->startOfMonth()->toDateString(),
                     'created_at' => now(), 'updated_at' => now(),
@@ -281,6 +292,6 @@ class DemoSeeder extends Seeder
             }
         }
 
-        $this->command->info('✅ Demo data seeded: ' . $createdProducts->count() . ' products, 60 orders, dealers, customers, finance.');
+        $this->command->info('✅ Demo data seeded: ' . $createdProducts->count() . ' products (Turkish delights), 60 orders.');
     }
 }

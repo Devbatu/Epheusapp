@@ -4,7 +4,7 @@ import { TopBar }       from './TopBar'
 
 export function AdminLayout() {
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-cream ">
       <AdminSidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <TopBar />

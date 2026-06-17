@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import {
   LayoutDashboard, Building2, Package, ShoppingCart,
   ArrowLeftRight, Users, Truck, BarChart3, Store,
-  Warehouse, FileText, Bell, Settings,
+  Palette, Languages,
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { cn } from '@/lib/utils'
@@ -19,19 +19,30 @@ const navItems = [
   { to: '/admin/reports',    icon: BarChart3,       label: 'Reports',    permission: 'reports.view' },
 ]
 
+const settingsItems = [
+  { to: '/admin/settings/appearance',   icon: Palette,   label: 'Appearance' },
+  { to: '/admin/settings/localization', icon: Languages, label: 'Languages' },
+]
+
 export function AdminSidebar() {
   const { hasPermission } = useAuthStore()
 
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    cn(
+      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+      isActive
+        ? 'bg-gold/15 font-medium text-gold-dark'
+        : 'text-charcoal/70 hover:bg-cream hover:text-primary',
+    )
+
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <aside className="flex h-full w-64 flex-col border-r border-mist bg-surface">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-3 border-b border-gray-200 px-6 dark:border-gray-800">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-600">
-          <span className="text-sm font-bold text-white">E</span>
-        </div>
+      <div className="flex h-16 items-center gap-3 border-b border-mist px-6">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gold bg-primary brand-ephesus text-gold">E</div>
         <div>
-          <p className="text-sm font-bold text-gray-900 dark:text-white">Ephesus</p>
-          <p className="text-xs text-gray-500">Mediterranean Delights</p>
+          <p className="brand-ephesus text-sm tracking-widest text-primary">EPHESUS</p>
+          <p className="brand-tagline -mt-1 text-base text-gold-dark">Mediterranean Delights</p>
         </div>
       </div>
 
@@ -42,17 +53,7 @@ export function AdminSidebar() {
             if (item.permission && !hasPermission(item.permission)) return null
             return (
               <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
-                      isActive
-                        ? 'bg-amber-50 text-amber-700 font-medium dark:bg-amber-950 dark:text-amber-400'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white',
-                    )
-                  }
-                >
+                <NavLink to={item.to} className={linkClass}>
                   <item.icon className="h-4 w-4 shrink-0" />
                   {item.label}
                 </NavLink>
@@ -60,18 +61,19 @@ export function AdminSidebar() {
             )
           })}
         </ul>
-      </nav>
 
-      {/* Bottom links */}
-      <div className="border-t border-gray-200 p-3 dark:border-gray-800">
-        <NavLink
-          to="/admin/settings"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-100"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </NavLink>
-      </div>
+        <p className="mt-6 px-3 text-[10px] font-semibold uppercase tracking-widest text-text-light">Settings</p>
+        <ul className="mt-2 space-y-1">
+          {settingsItems.map((item) => (
+            <li key={item.to}>
+              <NavLink to={item.to} className={linkClass}>
+                <item.icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </aside>
   )
 }

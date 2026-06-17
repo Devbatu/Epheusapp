@@ -2,16 +2,16 @@ import { cn } from '@/lib/utils'
 import type { TransferStatus, OrderStatus, DealerStatus } from '@/types'
 
 const transferColors: Record<TransferStatus, string> = {
-  pending:   'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300',
-  approved:  'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300',
-  rejected:  'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300',
-  shipped:   'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300',
-  received:  'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300',
-  cancelled: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+  pending:   'bg-amber-100 text-amber-800  ',
+  approved:  'bg-blue-100 text-blue-800  ',
+  rejected:  'bg-red-100 text-red-800  ',
+  shipped:   'bg-purple-100 text-purple-800  ',
+  received:  'bg-green-100 text-green-800  ',
+  cancelled: 'bg-cream text-charcoal/70  ',
 }
 
 const orderColors: Record<OrderStatus, string> = {
-  draft:      'bg-gray-100 text-gray-600',
+  draft:      'bg-cream text-charcoal/70',
   pending:    'bg-amber-100 text-amber-800',
   confirmed:  'bg-blue-100 text-blue-800',
   processing: 'bg-indigo-100 text-indigo-800',
@@ -26,7 +26,7 @@ const dealerColors: Record<DealerStatus, string> = {
   pending:   'bg-amber-100 text-amber-800',
   approved:  'bg-green-100 text-green-800',
   rejected:  'bg-red-100 text-red-800',
-  suspended: 'bg-gray-100 text-gray-600',
+  suspended: 'bg-cream text-charcoal/70',
 }
 
 function Badge({ className, label }: { className: string; label: string }) {

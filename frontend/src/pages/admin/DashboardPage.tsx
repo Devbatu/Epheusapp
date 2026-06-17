@@ -27,7 +27,7 @@ export default function AdminDashboardPage() {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-28 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800" />
+          <div key={i} className="h-28 animate-pulse rounded-xl bg-mist " />
         ))}
       </div>
     )
@@ -36,8 +36,8 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
-        <p className="text-sm text-gray-500">Welcome back — here's what's happening today.</p>
+        <h2 className="text-2xl font-bold text-primary ">Dashboard</h2>
+        <p className="text-sm text-text-light">Welcome back — here's what's happening today.</p>
       </div>
 
       {/* KPI Cards */}
@@ -83,18 +83,18 @@ export default function AdminDashboardPage() {
 
       {/* Tables row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-xl border border-mist bg-surface p-6  ">
           <div className="mb-4 flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Low Stock Alert</h3>
+            <AlertTriangle className="h-4 w-4 text-gold-dark" />
+            <h3 className="font-semibold text-primary ">Low Stock Alert</h3>
           </div>
           <LowStockTable items={data?.low_stock_products ?? []} />
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-xl border border-mist bg-surface p-6  ">
           <div className="mb-4 flex items-center gap-2">
             <Building2 className="h-4 w-4 text-blue-500" />
-            <h3 className="font-semibold text-gray-900 dark:text-white">Branch Performance</h3>
+            <h3 className="font-semibold text-primary ">Branch Performance</h3>
           </div>
           <BranchPerformanceTable />
         </div>

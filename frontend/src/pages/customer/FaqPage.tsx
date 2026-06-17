@@ -3,13 +3,13 @@ import { ChevronDown } from 'lucide-react'
 import { Seo } from '@/components/shared/Seo'
 
 const faqs = [
-  { q: 'Siparişim ne zaman elime ulaşır?', a: 'Siparişleriniz, ödeme onayından sonra 1-3 iş günü içinde kargoya verilir. Türkiye geneli teslimat süresi ortalama 2-4 iş günüdür.' },
-  { q: 'Kargo ücreti ne kadar?', a: '500 ₺ ve üzeri siparişlerde kargo ücretsizdir. Bu tutarın altındaki siparişlerde sabit 49,90 ₺ kargo ücreti uygulanır.' },
-  { q: 'Ürünleriniz katkı maddesi içeriyor mu?', a: 'Tüm ürünlerimiz %100 doğaldır. Koruyucu, renklendirici veya yapay katkı maddesi kullanmıyoruz.' },
-  { q: 'İade ve değişim koşulları nelerdir?', a: 'Açılmamış ve bozulmamış ürünleri teslimattan itibaren 14 gün içinde iade edebilirsiniz. Gıda güvenliği nedeniyle açılmış ürünlerde iade kabul edilmez.' },
-  { q: 'Toptan alım yapabilir miyim?', a: 'Evet. Bayi portalımıza başvurarak özel toptan fiyatları, kredi limiti ve öncelikli sevkiyat avantajlarından yararlanabilirsiniz.' },
-  { q: 'Ürünlerin son kullanma tarihi ne kadar?', a: 'Her üründe parti/lot ve son kullanma tarihi takibi yapılır. Size her zaman en taze partiyi gönderiyoruz.' },
-  { q: 'Hangi ödeme yöntemlerini kabul ediyorsunuz?', a: 'Kredi/banka kartı, havale/EFT ve kapıda ödeme seçeneklerini sunuyoruz. Bayilerimiz için vadeli ödeme imkânı mevcuttur.' },
+  { q: 'When will my order arrive?', a: 'Orders ship within 1–2 business days of payment. Standard delivery across the USA takes 2–5 business days.' },
+  { q: 'How much is shipping?', a: 'Shipping is free on orders over $75. Orders below that have a flat $7.90 shipping fee.' },
+  { q: 'Are your products all natural?', a: 'Yes. All our products are 100% natural — no preservatives, colorings or artificial additives.' },
+  { q: 'What is your return policy?', a: 'Unopened, undamaged items can be returned within 14 days of delivery. For food-safety reasons, opened items cannot be returned.' },
+  { q: 'Do you offer wholesale pricing?', a: 'Yes. Apply through our dealer portal for special wholesale pricing, credit terms and priority shipping.' },
+  { q: 'How fresh are the products?', a: 'Every product is batch and date tracked. We always ship you the freshest batch available.' },
+  { q: 'Which payment methods do you accept?', a: 'We accept all major credit/debit cards and bank transfers. Dealers may use net payment terms.' },
 ]
 
 function Item({ q, a }: { q: string; a: string }) {
@@ -29,18 +29,16 @@ export default function FaqPage() {
   return (
     <div>
       <Seo
-        title="Sıkça Sorulan Sorular"
-        description="Ephesus Mediterranean Delights hakkında sıkça sorulan sorular: teslimat, kargo, iade, ödeme, toptan alım ve ürün bilgileri."
-        keywords="sss, kargo, iade, teslimat, ödeme yöntemleri"
+        title="FAQ"
+        description="Frequently asked questions about Ephesus Mediterranean Delights — shipping, returns, payment, wholesale and product information."
+        keywords="faq, shipping, returns, delivery, payment methods"
       />
-
       <div className="bg-primary">
         <div className="mx-auto max-w-7xl px-6 py-14 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Yardım</p>
-          <h1 className="mt-2 font-heading text-4xl font-bold text-white">Sıkça Sorulan Sorular</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Help</p>
+          <h1 className="mt-2 font-heading text-4xl font-bold text-white">Frequently Asked Questions</h1>
         </div>
       </div>
-
       <section className="mx-auto max-w-3xl space-y-3 px-6 py-14">
         {faqs.map((f) => <Item key={f.q} {...f} />)}
       </section>

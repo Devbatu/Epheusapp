@@ -13,18 +13,18 @@ export function RevenueChart() {
   })
 
   if (isLoading) {
-    return <div className="h-72 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800" />
+    return <div className="h-72 animate-pulse rounded-xl bg-mist " />
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-      <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Monthly Revenue</h3>
+    <div className="rounded-xl border border-mist bg-surface p-6  ">
+      <h3 className="mb-4 font-semibold text-primary ">Monthly Revenue</h3>
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart data={data ?? []}>
           <defs>
             <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#d97706" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#d97706" stopOpacity={0} />
+              <stop offset="5%" stopColor="#C19B66" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#C19B66" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -34,7 +34,7 @@ export function RevenueChart() {
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#d97706"
+            stroke="#C19B66"
             strokeWidth={2}
             fill="url(#revenueGrad)"
           />

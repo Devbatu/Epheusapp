@@ -50,7 +50,7 @@ class CustomerProductController extends Controller
             ->where('status', 'active')
             ->firstOrFail();
 
-        $related = Product::with('brand')
+        $related = Product::with(['brand', 'category'])
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('status', 'active')
@@ -66,6 +66,7 @@ class CustomerProductController extends Controller
                 'unit'        => $product->unit,
                 'origin'      => $product->origin_country,
                 'tax_rate'    => (float) $product->tax_rate,
+                'images'      => $product->meta['images'] ?? array_filter([$product->meta['image'] ?? null]),
                 'related'     => $related,
             ],
         ]);

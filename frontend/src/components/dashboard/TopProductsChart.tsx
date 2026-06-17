@@ -10,10 +10,10 @@ interface TopProduct {
 
 export function TopProductsChart({ products }: { products: TopProduct[] }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-      <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Top Products</h3>
+    <div className="rounded-xl border border-mist bg-surface p-6  ">
+      <h3 className="mb-4 font-semibold text-primary ">Top Products</h3>
       {products.length === 0 ? (
-        <p className="py-8 text-center text-sm text-gray-400">No data yet.</p>
+        <p className="py-8 text-center text-sm text-text-light">No data yet.</p>
       ) : (
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={products} layout="vertical">
@@ -26,7 +26,7 @@ export function TopProductsChart({ products }: { products: TopProduct[] }) {
               tickFormatter={(v) => truncate(v, 14)}
             />
             <Tooltip formatter={(v: number) => [formatCurrency(v), 'Revenue']} />
-            <Bar dataKey="total_revenue" fill="#d97706" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="total_revenue" fill="#C19B66" radius={[0, 4, 4, 0]} />
           </BarChart>
         </ResponsiveContainer>
       )}

@@ -12,13 +12,13 @@ const navItems = [
 
 export function DealerLayout() {
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
-      <aside className="flex h-full w-60 flex-col border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex h-16 items-center gap-3 border-b border-gray-200 px-5 dark:border-gray-800">
+    <div className="flex h-screen overflow-hidden bg-cream ">
+      <aside className="flex h-full w-60 flex-col border-r border-mist bg-surface  ">
+        <div className="flex h-16 items-center gap-3 border-b border-mist px-5 ">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-600">
             <span className="text-xs font-bold text-white">D</span>
           </div>
-          <p className="text-sm font-bold text-gray-900 dark:text-white">Dealer Portal</p>
+          <p className="text-sm font-bold text-primary ">Dealer Portal</p>
         </div>
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-1">
@@ -29,8 +29,8 @@ export function DealerLayout() {
                   className={({ isActive }) => cn(
                     'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
                     isActive
-                      ? 'bg-green-50 text-green-700 font-medium dark:bg-green-950 dark:text-green-400'
-                      : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
+                      ? 'bg-green-50 text-green-700 font-medium  '
+                      : 'text-charcoal/70 hover:bg-cream  ',
                   )}
                 >
                   <item.icon className="h-4 w-4 shrink-0" />

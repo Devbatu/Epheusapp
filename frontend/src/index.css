@@ -5,26 +5,27 @@
    bg-primary, text-gold, border-gold-dark, font-display, etc.
 --------------------------------------------------------------------------- */
 @theme {
-  /* Brand colours */
-  --color-primary: #24364D;        /* Lacivert */
-  --color-primary-dark: #1A2535;   /* Koyu Lacivert */
-  --color-primary-light: #324a68;
+  /* Brand colours — Ephesus luxury palette */
+  --color-primary: #16202E;        /* Navy */
+  --color-primary-dark: #0F1521;   /* Night Blue (top bg, footer) */
+  --color-primary-light: #243345;
 
-  --color-gold: #C9A45C;           /* Premium Altın */
-  --color-gold-dark: #A8843F;      /* Koyu Altın */
-  --color-gold-light: #ddc18e;
+  --color-gold: #C19B66;           /* Gold / Bronze */
+  --color-gold-dark: #A07E4C;      /* Dark Gold */
+  --color-gold-light: #D8B886;
 
-  --color-charcoal: #2F2A28;       /* Kömür Siyahı */
-  --color-cream: #F8F5F0;          /* Kırık Beyaz */
-  --color-mist: #E7EAEE;           /* Açık Gri */
+  --color-charcoal: #2B2B2B;       /* Anthracite (text on light) */
+  --color-cream: #F5F3ED;          /* Off-white (light sections) */
+  --color-mist: #E6E2D8;           /* Light divider */
   --color-surface: #FFFFFF;
-  --color-text-light: #6B7280;
+  --color-text-light: #6B6B6B;
 
   /* Fonts */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Cinzel", serif;            /* EPHESUS, başlıklar */
-  --font-script: "Allura", cursive;           /* Mediterranean Delights */
-  --font-serif: "Cormorant Garamond", serif;  /* Editöryel başlıklar */
+  --font-display: "Cinzel", serif;             /* EPHESUS wordmark */
+  --font-script: "Allura", cursive;            /* Mediterranean Delights */
+  --font-serif: "Playfair Display", Georgia, serif;  /* Elegant display headings */
+  --font-heading: "Playfair Display", Georgia, serif;
 }
 
 @layer base {
@@ -38,7 +39,7 @@
     margin: 0;
     font-family: var(--font-sans);
     background: var(--color-cream);
-    color: #1E1E1E;
+    color: #2B2B2B;
   }
 
   /* Selection */
@@ -75,7 +76,7 @@
 
   /* Subtle gold gradient text */
   .text-gold-gradient {
-    background: linear-gradient(135deg, #ddc18e 0%, #C9A45C 45%, #A8843F 100%);
+    background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 45%, var(--color-gold-dark) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -85,7 +86,7 @@
   .gold-rule {
     height: 2px;
     width: 64px;
-    background: linear-gradient(90deg, transparent, #C9A45C, transparent);
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
   }
 }
 

@@ -1,15 +1,24 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Search, Package, Star } from 'lucide-react'
+import { Search, Package, Plus, Pencil, Star, Filter } from 'lucide-react'
+import { toast } from 'sonner'
 import { productsApi } from '@/services/api/products'
 import { formatCurrency } from '@/utils/format'
 
+const STATUS = [
+  { value: '', label: 'All Status' },
+  { value: 'active', label: 'Active' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'inactive', label: 'Inactive' },
+]
+
 export default function ProductsPage() {
   const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('')
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'products', search],
-    queryFn: () => productsApi.list({ search: search || undefined, per_page: 24 }),
+    queryKey: ['admin', 'products', search, status],
+    queryFn: () => productsApi.list({ search: search || undefined, status: status || undefined, per_page: 50 }),
   })
 
   const products = data?.data ?? []
@@ -18,86 +27,90 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Ürünler</h2>
-          <p className="text-sm text-gray-500">Akdeniz ürün kataloğu — {data?.meta?.total ?? 0} ürün</p>
+          <h2 className="font-heading text-2xl font-bold text-primary">Product Management</h2>
+          <p className="text-sm text-text-light">{data?.meta?.total ?? 0} products in catalog</p>
+        </div>
+        <button onClick={() => toast.info('Product editor — coming soon in this demo')}
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-primary-dark">
+          <Plus className="h-4 w-4" /> New Product
+        </button>
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-text-light" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by name or SKU…"
+            className="w-full rounded-lg border border-mist bg-surface py-2.5 pl-10 pr-3 text-sm focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20" />
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Ürün veya SKU ara…"
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:w-72"
-          />
+          <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-light" />
+          <select value={status} onChange={(e) => setStatus(e.target.value)}
+            className="rounded-lg border border-mist bg-surface py-2.5 pl-9 pr-8 text-sm focus:border-gold focus:outline-none">
+            {STATUS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+          </select>
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800" />
-          ))}
-        </div>
-      ) : products.length === 0 ? (
-        <div className="flex h-64 flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 text-gray-400 dark:border-gray-800">
-          <Package className="mb-2 h-8 w-8" />
-          <p className="text-sm">Ürün bulunamadı.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className="group overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
-            >
-              <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800">
-                {p.image_url ? (
-                  <img
-                    src={p.image_url}
-                    alt={p.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-gray-300">
-                    <Package className="h-10 w-10" />
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border border-mist bg-surface">
+        <table className="min-w-full divide-y divide-mist">
+          <thead className="bg-cream">
+            <tr>
+              {['Product', 'Category', 'Brand', 'Retail', 'B2B', 'Status', ''].map((h) => (
+                <th key={h} className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-light">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-mist">
+            {isLoading ? (
+              Array.from({ length: 8 }).map((_, i) => (
+                <tr key={i}>{Array.from({ length: 7 }).map((_, j) => (
+                  <td key={j} className="px-5 py-4"><div className="h-4 animate-pulse rounded bg-mist" /></td>
+                ))}</tr>
+              ))
+            ) : products.length === 0 ? (
+              <tr><td colSpan={7} className="py-16 text-center text-sm text-text-light">
+                <Package className="mx-auto mb-2 h-8 w-8 opacity-40" /> No products found.
+              </td></tr>
+            ) : products.map((p) => (
+              <tr key={p.id} className="transition-colors hover:bg-cream/60">
+                <td className="px-5 py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-cream">
+                      {p.image_url && <img src={p.image_url} alt={p.name} className="h-full w-full object-cover" />}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="flex items-center gap-1.5 text-sm font-medium text-primary">
+                        {p.name}
+                        {p.is_featured && <Star className="h-3 w-3 fill-gold text-gold" />}
+                      </p>
+                      <p className="text-xs text-text-light">{p.sku}</p>
+                    </div>
                   </div>
-                )}
-                {p.is_featured && (
-                  <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-amber-500 px-2 py-0.5 text-xs font-medium text-white">
-                    <Star className="h-3 w-3" /> Öne çıkan
+                </td>
+                <td className="px-5 py-3 text-sm text-charcoal/70">{p.category}</td>
+                <td className="px-5 py-3 text-sm text-charcoal/70">{p.brand}</td>
+                <td className="px-5 py-3 text-sm font-semibold text-primary">{formatCurrency(p.base_price)}</td>
+                <td className="px-5 py-3 text-sm text-charcoal/70">{formatCurrency(p.b2b_price)}</td>
+                <td className="px-5 py-3">
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    p.status === 'active' ? 'bg-green-100 text-green-700'
+                    : p.status === 'draft' ? 'bg-amber-100 text-amber-700' : 'bg-cream text-text-light'}`}>
+                    {p.status}
                   </span>
-                )}
-                <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-900/90 dark:text-gray-300">
-                  {p.category}
-                </span>
-              </div>
-              <div className="p-4">
-                <p className="text-xs font-medium text-amber-600">{p.brand}</p>
-                <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-gray-900 dark:text-white">
-                  {p.name}
-                </h3>
-                <p className="mt-1 text-xs text-gray-400">{p.sku}</p>
-                <div className="mt-3 flex items-end justify-between">
-                  <div>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      {formatCurrency(p.base_price)}
-                    </p>
-                    <p className="text-xs text-gray-400">B2B: {formatCurrency(p.b2b_price)}</p>
-                  </div>
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                    p.status === 'active'
-                      ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400'
-                      : 'bg-gray-100 text-gray-500'
-                  }`}>
-                    {p.status === 'active' ? 'Aktif' : p.status}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+                </td>
+                <td className="px-5 py-3 text-right">
+                  <button onClick={() => toast.info('Edit — coming soon in this demo')}
+                    className="rounded-lg p-2 text-text-light transition-colors hover:bg-cream hover:text-gold-dark">
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

@@ -30,9 +30,9 @@ export function TopBar() {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-gray-800 dark:bg-gray-900">
+    <header className="flex h-16 items-center justify-between border-b border-mist bg-surface px-6  ">
       <div className="flex items-center gap-4">
-        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <h1 className="text-lg font-semibold text-primary ">
           Ephesus ERP
         </h1>
       </div>
@@ -41,14 +41,14 @@ export function TopBar() {
         {/* Theme toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="rounded-lg p-2 text-text-light hover:bg-cream "
         >
           {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </button>
 
         {/* Notifications */}
         <button
-          className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="relative rounded-lg p-2 text-text-light hover:bg-cream "
           onClick={() => navigate('/admin/notifications')}
         >
           <Bell className="h-4 w-4" />
@@ -62,19 +62,19 @@ export function TopBar() {
 
         {/* User info */}
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900">
-            <User className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-cream">
+            <User className="h-4 w-4 text-gold-dark" />
           </div>
           <div className="hidden md:block">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name}</p>
-            <p className="text-xs text-gray-500">{user?.roles?.[0]?.name}</p>
+            <p className="text-sm font-medium text-primary ">{user?.name}</p>
+            <p className="text-xs text-text-light">{user?.roles?.[0]?.name}</p>
           </div>
         </div>
 
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950"
+          className="rounded-lg p-2 text-text-light hover:bg-red-50 hover:text-red-600 "
         >
           <LogOut className="h-4 w-4" />
         </button>

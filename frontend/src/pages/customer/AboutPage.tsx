@@ -3,54 +3,51 @@ import { Leaf, Award, Globe, HeartHandshake, ArrowRight } from 'lucide-react'
 import { Seo } from '@/components/shared/Seo'
 
 const stats = [
-  { value: '1995', label: 'Kuruluş' },
-  { value: '5', label: 'Şube' },
-  { value: '5.000+', label: 'Ürün' },
-  { value: '100K+', label: 'Mutlu Müşteri' },
+  { value: '1995', label: 'Established' },
+  { value: '50K+', label: 'Happy Customers' },
+  { value: '120+', label: 'Products' },
+  { value: '48', label: 'US States Served' },
 ]
 
 const values = [
-  { icon: Leaf, title: 'Doğallık', desc: 'Katkısız, geleneksel yöntemlerle üretilen ürünler.' },
-  { icon: Award, title: 'Kalite', desc: 'Her ürün titizlikle seçilir ve test edilir.' },
-  { icon: Globe, title: 'Sürdürülebilirlik', desc: 'Yerel üreticiyi ve doğayı koruyan tedarik.' },
-  { icon: HeartHandshake, title: 'Güven', desc: 'Üreticiden sofraya şeffaf bir tedarik zinciri.' },
+  { icon: Leaf, title: 'All Natural', desc: 'No additives — crafted with traditional methods.' },
+  { icon: Award, title: 'Premium Quality', desc: 'Every product is carefully selected and tested.' },
+  { icon: Globe, title: 'Sustainability', desc: 'Sourcing that respects growers and the land.' },
+  { icon: HeartHandshake, title: 'Trust', desc: 'A transparent supply chain from artisan to table.' },
 ]
 
 export default function AboutPage() {
   return (
     <div>
       <Seo
-        title="Hakkımızda"
-        description="Ephesus Mediterranean Delights — 1995'ten beri Ege'nin bereketli topraklarından premium Akdeniz lezzetleri sunan kurumsal gurme markası."
-        keywords="ephesus hakkında, akdeniz gurme, zeytinyağı üreticisi, kurumsal gıda"
+        title="Our Story"
+        description="Ephesus Mediterranean Delights — since 1995, bringing authentic handcrafted Turkish delights, baklava and coffee from Anatolia to America."
+        keywords="about ephesus, turkish delight brand, baklava, anatolian heritage"
       />
 
-      {/* Hero */}
       <div className="relative h-72 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=1600&q=80" alt="Zeytin bahçesi" className="h-full w-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=1600&q=80" alt="Heritage" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-primary-dark/70" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Kurumsal</p>
-          <h1 className="mt-2 font-heading text-5xl font-bold text-white">Hakkımızda</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Our Story</p>
+          <h1 className="mt-2 font-heading text-5xl font-bold text-white">From Anatolia to America</h1>
         </div>
       </div>
 
-      {/* Story */}
       <section className="mx-auto max-w-4xl px-6 py-16 text-center">
         <div className="mx-auto gold-rule" />
-        <h2 className="mt-6 font-heading text-3xl font-bold text-primary">Gelenekten Gelen Lezzet</h2>
+        <h2 className="mt-6 font-heading text-3xl font-bold text-primary">A Taste Rooted in Tradition</h2>
         <p className="mt-6 text-lg leading-relaxed text-text-light">
-          Ephesus Mediterranean Delights, 1995 yılında İzmir’de kuruldu. Amacımız, Ege ve Akdeniz’in
-          eşsiz lezzetlerini en taze, en kaliteli haliyle sofralara taşımaktı. Bugün 5 şubemiz ve
-          binlerce ürünümüzle Türkiye’nin dört bir yanına hizmet veriyoruz.
+          Ephesus Mediterranean Delights was founded in 1995 with a simple mission: to share the authentic
+          flavors of Anatolia with the world. Today we deliver handcrafted baklava, Turkish delight and coffee
+          to homes across America — made the traditional way, with the finest ingredients.
         </p>
         <p className="mt-4 text-lg leading-relaxed text-text-light">
-          Zeytinyağından baklavaya, peynirden kuruyemişe kadar tüm ürünlerimiz, yerel üreticilerle
-          doğrudan kurduğumuz iş birlikleriyle, geleneksel yöntemler korunarak hazırlanır.
+          From our master artisans to your table, every box is a celebration of centuries-old recipes and
+          timeless passion.
         </p>
       </section>
 
-      {/* Stats */}
       <section className="bg-primary">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-14 lg:grid-cols-4">
           {stats.map((s) => (
@@ -62,11 +59,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-10 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold-dark">Değerlerimiz</p>
-          <h2 className="mt-2 font-heading text-3xl font-bold text-primary">Bizi Biz Yapan İlkeler</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-gold-dark">Our Values</p>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-primary">What Makes Us Who We Are</h2>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v) => (
@@ -81,13 +77,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="bg-mist/40">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-14 text-center">
-          <h2 className="font-heading text-3xl font-bold text-primary">Lezzeti Keşfedin</h2>
-          <p className="max-w-xl text-text-light">Ege’nin bereketini sofranıza taşıyan ürünlerimizi inceleyin.</p>
+          <h2 className="font-heading text-3xl font-bold text-primary">Discover the Flavor</h2>
+          <p className="max-w-xl text-text-light">Explore our handcrafted collection of Turkish delights.</p>
           <Link to="/shop" className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold uppercase tracking-wide text-cream transition-colors hover:bg-primary-dark">
-            Mağazaya Git <ArrowRight className="h-4 w-4" />
+            Shop Now <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

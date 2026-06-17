@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingBag, Package, Star } from 'lucide-react'
+import { Plus, Package } from 'lucide-react'
 import { toast } from 'sonner'
 import type { ShopProduct } from '@/services/api/shop'
 import { useCartStore } from '@/stores/cartStore'
@@ -17,15 +17,15 @@ export function ProductCard({ product }: { product: ShopProduct }) {
       price: product.price,
       image_url: product.image_url,
     })
-    toast.success(`${product.name} sepete eklendi`)
+    toast.success(`${product.name} added to cart`)
   }
 
   return (
     <Link
       to={`/shop/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-mist bg-surface transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/40 hover:shadow-2xl hover:shadow-primary/10"
+      className="group flex flex-col overflow-hidden rounded-2xl bg-surface shadow-[0_2px_20px_rgba(26,37,53,0.06)] ring-1 ring-mist/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(26,37,53,0.16)]"
     >
-      <div className="relative aspect-square overflow-hidden bg-cream">
+      <div className="relative m-3 mb-0 aspect-square overflow-hidden rounded-xl bg-cream">
         {product.image_url ? (
           <img
             src={product.image_url}
@@ -38,31 +38,26 @@ export function ProductCard({ product }: { product: ShopProduct }) {
             <Package className="h-12 w-12" />
           </div>
         )}
-
         {product.is_featured && (
-          <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-gold px-2.5 py-1 text-xs font-semibold text-primary-dark shadow">
-            <Star className="h-3 w-3 fill-current" /> Öne Çıkan
+          <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold backdrop-blur">
+            Best Seller
           </span>
         )}
-
-        <button
-          onClick={handleAdd}
-          className="absolute bottom-3 right-3 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-primary text-gold opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-gold hover:text-primary-dark"
-          aria-label="Sepete ekle"
-        >
-          <ShoppingBag className="h-4 w-4" />
-        </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-4">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-gold-dark">{product.brand}</p>
-        <h3 className="mt-1.5 line-clamp-2 flex-1 font-heading text-base font-semibold leading-snug text-primary">
-          {product.name}
-        </h3>
-        <div className="mt-3 flex items-center justify-between">
-          <p className="text-lg font-bold text-primary">{formatCurrency(product.price)}</p>
-          <span className="text-xs text-text-light opacity-0 transition-opacity group-hover:opacity-100">İncele →</span>
+      <div className="flex items-end justify-between gap-2 p-4">
+        <div className="min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-gold-dark">{product.brand}</p>
+          <h3 className="mt-1 line-clamp-1 font-heading text-base font-semibold text-primary">{product.name}</h3>
+          <p className="mt-1 text-lg font-bold text-primary">{formatCurrency(product.price)}</p>
         </div>
+        <button
+          onClick={handleAdd}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold text-primary-dark shadow-md transition-all hover:bg-primary hover:text-gold"
+          aria-label="Sepete ekle"
+        >
+          <Plus className="h-5 w-5" />
+        </button>
       </div>
     </Link>
   )

@@ -1,16 +1,13 @@
+import { ModulePage } from '@/components/shared/ModulePage'
+import { Package } from 'lucide-react'
+
 export default function InventoryPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Envanter</h2>
-        <p className="text-sm text-gray-500">Stok takibi ve düzeltmeler</p>
-      </div>
-      <div className="flex h-64 items-center justify-center rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-800">
-        <div className="text-center">
-          <p className="text-sm font-medium text-gray-400">Bu sayfa yakında</p>
-          <p className="mt-1 text-xs text-gray-400">InventoryPage</p>
-        </div>
-      </div>
-    </div>
+    <ModulePage
+      icon={Package}
+      title="Inventory"
+      description="Track stock, batches, lots and expirations across your warehouses."
+      points={["Stock levels per warehouse","Batch & expiration tracking","Manual adjustments"]}
+    />
   )
 }

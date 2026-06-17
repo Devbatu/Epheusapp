@@ -24,6 +24,8 @@ const DealerDetailPage        = lazy(() => import('@/pages/admin/DealerDetailPag
 const SuppliersPage           = lazy(() => import('@/pages/admin/SuppliersPage'))
 const ReportsPage             = lazy(() => import('@/pages/admin/ReportsPage'))
 const AdminTransfersPage      = lazy(() => import('@/pages/admin/TransfersPage'))
+const AppearancePage          = lazy(() => import('@/pages/admin/AppearancePage'))
+const LocalizationPage        = lazy(() => import('@/pages/admin/LocalizationPage'))
 
 // Branch pages
 const BranchDashboard         = lazy(() => import('@/pages/branch/DashboardPage'))
@@ -91,6 +93,8 @@ export const router = createBrowserRouter([
       { path: 'suppliers',         element: <S><SuppliersPage /></S> },
       { path: 'transfers',         element: <S><AdminTransfersPage /></S> },
       { path: 'reports',           element: <S><ReportsPage /></S> },
+      { path: 'settings/appearance',   element: <S><AppearancePage /></S> },
+      { path: 'settings/localization', element: <S><LocalizationPage /></S> },
     ],
   },
 
