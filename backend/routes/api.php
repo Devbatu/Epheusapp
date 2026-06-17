@@ -71,7 +71,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ─── Customer Auth & Portal ───────────────────────────────────────────
-    Route::prefix('customer')->group(function () {
+    Route::prefix('customer')->name('customer.')->group(function () {
         Route::post('/register', [CustomerAuthController::class, 'register'])->middleware('throttle:5,1');
         Route::post('/login', [CustomerAuthController::class, 'login'])->middleware('throttle:10,1');
 
@@ -94,7 +94,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ─── Dealer Portal ────────────────────────────────────────────────────
-    Route::prefix('dealer')->group(function () {
+    Route::prefix('dealer')->name('dealer.')->group(function () {
         Route::post('/register', [DealerAuthController::class, 'register'])->middleware('throttle:5,1');
         Route::post('/login', [DealerAuthController::class, 'login'])->middleware('throttle:10,1');
 
@@ -112,7 +112,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ─── Admin — Super Admin / Company Admin ──────────────────────────────
-    Route::prefix('admin')->middleware(['auth:sanctum', 'role:super-admin|company-admin'])->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'role:super-admin|company-admin'])->group(function () {
 
         Route::get('/dashboard', [AdminDashboard::class, 'index']);
 
@@ -174,7 +174,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ─── Branch Manager Portal ────────────────────────────────────────────
-    Route::prefix('branch')->middleware(['auth:sanctum', 'branch.access'])->group(function () {
+    Route::prefix('branch')->name('branch.')->middleware(['auth:sanctum', 'branch.access'])->group(function () {
 
         Route::get('/dashboard', [BranchDashboardController::class, 'index']);
         Route::get('/kpis', [BranchDashboardController::class, 'kpis']);
