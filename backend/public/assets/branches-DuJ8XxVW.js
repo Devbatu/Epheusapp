@@ -1,0 +1,1 @@
+import{f as e}from"./index-CkPhsh_I.js";const n={list:a=>e.get("/admin/branches",{params:a}).then(t=>t.data),show:a=>e.get(`/admin/branches/${a}`).then(t=>t.data.data),toggleStatus:a=>e.patch(`/admin/branches/${a}/toggle-status`).then(t=>t.data.data)};export{n as b};
